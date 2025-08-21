@@ -2,45 +2,78 @@
 <html lang="zh-CN">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>未来公司 - 产品中心</title>
+  <title>产品展示</title>
   <link rel="stylesheet" href="style.css">
+  <style>
+    .product {
+      border: 1px solid #ddd;
+      padding: 20px;
+      margin: 20px auto;
+      text-align: center;
+      border-radius: 10px;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+      max-width: 400px;
+    }
+    .product img {
+      max-width: 200px;
+    }
+    .buy-btn {
+      display: inline-block;
+      margin-top: 10px;
+      padding: 10px 20px;
+      background: #ff6600;
+      color: white;
+      text-decoration: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 16px;
+    }
+    .buy-btn:hover {
+      background: #e65c00;
+    }
+    /* 遮罩层 */
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 1000;
+      left: 0; top: 0;
+      width: 100%; height: 100%;
+      background: rgba(0,0,0,0.6);
+      justify-content: center;
+      align-items: center;
+    }
+    .modal img {
+      max-width: 300px;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+    }
+  </style>
 </head>
 <body>
-  <header>
-    <h1>未来公司</h1>
-    <p>专业的销售与服务</p>
-  </header>
-  <nav>
-    <a href="index.html">首页</a>
-    <a href="products.html">产品中心</a>
-    <a href="contact.html">联系我们</a>
-  </nav>
 
-  <div class="container">
-    <h2>产品中心</h2>
-    <div class="products">
-      <div class="card">
-        <img src="https://picsum.photos/300/200?product1" alt="产品1">
-        <h3>产品一</h3>
-        <p>高效能、低成本的优质产品。</p>
-      </div>
-      <div class="card">
-        <img src="https://picsum.photos/300/200?product2" alt="产品2">
-        <h3>产品二</h3>
-        <p>适合各种场景的解决方案。</p>
-      </div>
-      <div class="card">
-        <img src="https://picsum.photos/300/200?product3" alt="产品3">
-        <h3>产品三</h3>
-        <p>专业品质，值得信赖。</p>
-      </div>
-    </div>
+  <h1 style="text-align:center;">产品展示</h1>
+
+  <!-- 示例产品 -->
+  <div class="product">
+    <h2>智能手环</h2>
+    <img src="images/product1.png" alt="智能手环">
+    <p>价格：¥199</p>
+    <button class="buy-btn" onclick="showQR()">立即购买</button>
   </div>
 
-  <footer>
-    <p>&copy; 2025 未来公司 版权所有</p>
-  </footer>
+  <!-- 支付二维码弹窗 -->
+  <div id="qrModal" class="modal" onclick="hideQR()">
+    <img src="images/pay.png" alt="付款二维码">
+  </div>
+
+  <script>
+    function showQR() {
+      document.getElementById("qrModal").style.display = "flex";
+    }
+    function hideQR() {
+      document.getElementById("qrModal").style.display = "none";
+    }
+  </script>
+
 </body>
 </html>
-
