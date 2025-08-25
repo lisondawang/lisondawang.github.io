@@ -31,6 +31,11 @@
             font-size: 18px;
             color: #333;
         }
+        .qr-code img {
+            width: 250px;
+            height: 250px;
+            margin: 20px 0;
+        }
         .btn {
             background-color: #e74c3c;
             color: white;
@@ -46,6 +51,10 @@
         .btn:hover {
             background-color: #c0392b;
         }
+        .close-btn {
+            background-color: #3498db;
+            margin-top: 20px;
+        }
     </style>
 </head>
 <body>
@@ -55,9 +64,15 @@
     <div class="product-details">
         <p id="product-name"></p>
         <p id="product-price"></p>
-        <p>请使用下方按钮完成支付：</p>
-        <!-- 执行支付按钮 -->
-        <a href="https://paymentlink.com" class="btn">完成支付</a>
+        <p>请扫描下方二维码完成支付：</p>
+        
+        <!-- 收款二维码 -->
+        <div class="qr-code">
+            <img src="https://via.placeholder.com/250" alt="收款二维码" id="qr-code">
+        </div>
+        
+        <!-- 完成支付按钮 -->
+        <a href="#" class="btn" id="finish-payment" style="display: none;" onclick="closePage()">完成支付</a>
     </div>
 </div>
 
@@ -71,20 +86,20 @@
     document.getElementById('product-name').textContent = `产品: ${product}`;
     document.getElementById('product-price').textContent = `价格: $${price}`;
 
-    // 付款完成后自动发送订单信息到邮箱（通过Formspree或EmailJS）
-    // （这里示例代码需要你根据你的服务提供商设置）
-    function sendOrderDetailsToEmail() {
-        const orderDetails = {
-            product: product,
-            price: price,
-            email: 'contact@yourcompany.com'  // 更新为你的联系邮箱
-        };
+    // 设置收款二维码的URL（替换为你自己的二维码链接）
+    const qrCodeUrl = 'https://via.placeholder.com/250';  // 替换为你实际的收款二维码图片URL
+    document.getElementById('qr-code').src = qrCodeUrl;
 
-        fetch('https://formspree.io/f/yourformid', {
-            method: 'POST',
-            body: JSON.stringify(orderDetails),
-            headers: { 'Content-Type': 'application/json' }
-        });
+    // 模拟付款完成后显示"完成支付"按钮
+    // 在实际应用中，你可以替换为付款成功的回调
+    setTimeout(function() {
+        document.getElementById('finish-payment').style.display = 'block';
+    }, 5000); // 模拟5秒后付款完成
+
+    // 完成支付并关闭页面
+    function closePage() {
+        alert('支付完成，感谢您的购买！');
+        window.close(); // 关闭当前页面
     }
 </script>
 
