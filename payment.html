@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>付款页面</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f9f9f9;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: white;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            margin-top: 50px;
+            border-radius: 10px;
+        }
+        h1 {
+            color: #2c3e50;
+            text-align: center;
+        }
+        .product-details {
+            text-align: center;
+        }
+        .product-details p {
+            font-size: 18px;
+            color: #333;
+        }
+        .btn {
+            background-color: #e74c3c;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            text-decoration: none;
+            display: block;
+            width: 100%;
+            margin-top: 20px;
+        }
+        .btn:hover {
+            background-color: #c0392b;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>付款页面</h1>
+    <div class="product-details">
+        <p id="product-name"></p>
+        <p id="product-price"></p>
+        <p>请使用下方按钮完成支付：</p>
+        <!-- 执行支付按钮 -->
+        <a href="https://paymentlink.com" class="btn">完成支付</a>
+    </div>
+</div>
+
+<script>
+    // 获取URL中的查询参数
+    const urlParams = new URLSearchParams(window.location.search);
+    const product = urlParams.get('product');
+    const price = urlParams.get('price');
+
+    // 显示产品名称和价格
+    document.getElementById('product-name').textContent = `产品: ${product}`;
+    document.getElementById('product-price').textContent = `价格: $${price}`;
+
+    // 付款完成后自动发送订单信息到邮箱（通过Formspree或EmailJS）
+    // （这里示例代码需要你根据你的服务提供商设置）
+    function sendOrderDetailsToEmail() {
+        const orderDetails = {
+            product: product,
+            price: price,
+            email: 'contact@yourcompany.com'  // 更新为你的联系邮箱
+        };
+
+        fetch('https://formspree.io/f/yourformid', {
+            method: 'POST',
+            body: JSON.stringify(orderDetails),
+            headers: { 'Content-Type': 'application/json' }
+        });
+    }
+</script>
+
+</body>
+</html>
