@@ -68,7 +68,8 @@
         
         <!-- 收款二维码 -->
         <div class="qr-code">
-            <img src="https://via.placeholder.com/250" alt="收款二维码" id="qr-code">
+            <!-- 引用images文件夹中的pay.png -->
+            <img src="images/pay.png" alt="收款二维码" id="qr-code">
         </div>
         
         <!-- 完成支付按钮 -->
@@ -85,10 +86,6 @@
     // 显示产品名称和价格
     document.getElementById('product-name').textContent = `产品: ${product}`;
     document.getElementById('product-price').textContent = `价格: $${price}`;
-
-    // 设置收款二维码的URL（替换为你自己的二维码链接）
-    const qrCodeUrl = 'https://via.placeholder.com/250';  // 替换为你实际的收款二维码图片URL
-    document.getElementById('qr-code').src = qrCodeUrl;
 
     // 模拟付款完成后显示"完成支付"按钮
     // 在实际应用中，你可以替换为付款成功的回调
