@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>订单确认 - 8号店铺</title>
+  <style>
+    body { font-family: Arial, sans-serif; background: #f9f9f9; text-align: center; padding: 40px; }
+    .box { background: white; padding: 20px; border-radius: 10px; box-shadow: 0 0 10px rgba(0,0,0,0.1); max-width: 500px; margin: auto; }
+    h2 { color: #2c3e50; }
+    .highlight { color: #e74c3c; font-weight: bold; }
+    a { color: #2980b9; text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    .copy-btn {
+      background: #e74c3c;
+      color: white;
+      border: none;
+      padding: 8px 15px;
+      border-radius: 5px;
+      cursor: pointer;
+      margin-top: 10px;
+    }
+    .copy-btn:hover { background: #c0392b; }
+    #copyMsg { color: green; margin-top: 8px; display: none; }
+  </style>
+</head>
+<body>
+
+<div class="box">
+  <h2>订单已提交 ✅</h2>
+  <p>感谢您的购买！</p>
+  <p>请务必将 <span class="highlight">付款截图</span> 和以下信息发送到邮箱：</p>
+
+  <p id="emailText">lisondawang@outlook.com</p>
+  <button class="copy-btn" onclick="copyEmail()">📋 一键复制邮箱地址</button>
+  <p id="copyMsg">邮箱已复制 ✅</p>
+
+  <h3>订单信息：</h3>
+  <p id="orderDetails"></p>
+
+  <p>📌 请在邮件里附上付款截图，以便我们快速为您处理订单。</p>
+</div>
+
+<script>
+  // 从 URL 获取参数并显示
+  const params = new URLSearchParams(window.location.search);
+  const product = params.get('product') || '';
+  const price = params.get('price') || '';
+  const email = params.get('email') || '';
+  const remark = params.get('remark') || '';
+
+  document.getElementById('orderDetails').innerHTML = `
+    产品编号：<b>${product}</b><br>
+    金额：<b>$${price}</b><br>
+    客户邮箱：<b>${email}</b><br>
+    备注：<b>${remark}</b>
+  `;
+
+  // 一键复制邮箱
+  function copyEmail() {
+    const email = document.getElementById("emailText").innerText;
+    navigator.clipboard.writeText(email).then(() => {
+      document.getElementById("copyMsg").style.display = "block";
+      setTimeout(() => {
+        document.getElementById("copyMsg").style.display = "none";
+      }, 2000);
+    });
+  }
+</script>
+
+</body>
+</html>
