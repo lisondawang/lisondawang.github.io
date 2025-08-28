@@ -1,103 +1,65 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>付款页面</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f9f9f9;
-            margin: 0;
-            padding: 0;
-        }
-        .container {
-            max-width: 600px;
-            margin: 0 auto;
-            padding: 20px;
-            background-color: white;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            margin-top: 50px;
-            border-radius: 10px;
-        }
-        h1 {
-            color: #2c3e50;
-            text-align: center;
-        }
-        .product-details {
-            text-align: center;
-        }
-        .product-details p {
-            font-size: 18px;
-            color: #333;
-        }
-        .qr-code img {
-            width: 250px;
-            height: 250px;
-            margin: 20px 0;
-        }
-        .btn {
-            background-color: #e74c3c;
-            color: white;
-            padding: 10px 20px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            text-decoration: none;
-            display: block;
-            width: 100%;
-            margin-top: 20px;
-        }
-        .btn:hover {
-            background-color: #c0392b;
-        }
-        .close-btn {
-            background-color: #3498db;
-            margin-top: 20px;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>订单支付 - 8号店铺</title>
+  <style>
+    body { font-family: Arial, sans-serif; background: #f9f9f9; text-align: center; }
+    header { background: #2c3e50; color: white; padding: 20px 0; }
+    form { margin: 30px auto; background: white; padding: 20px; border-radius: 10px; box-shadow: 0 0 10px rgba(0,0,0,0.1); width: 90%; max-width: 400px; text-align: left; }
+    label { display: block; margin: 10px 0 5px; font-weight: bold; }
+    input, textarea { width: 100%; padding: 10px; margin-bottom: 15px; border-radius: 5px; border: 1px solid #ccc; }
+    button { background: #e74c3c; color: white; border: none; padding: 10px; border-radius: 5px; cursor: pointer; width: 100%; }
+    button:hover { background: #c0392b; }
+    .qr-code img { width: 200px; height: 200px; margin: 20px 0; }
+  </style>
 </head>
 <body>
 
-<div class="container">
-    <h1>付款页面</h1>
-    <div class="product-details">
-        <p id="product-name"></p>
-        <p id="product-price"></p>
-        <p>请扫描下方二维码完成支付：</p>
-        
-        <!-- 收款二维码 -->
-        <div class="qr-code">
-            <!-- 引用images文件夹中的pay.png -->
-            <img src="images/pay.png" alt="收款二维码" id="qr-code">
-        </div>
-        
-        <!-- 完成支付按钮 -->
-        <a href="#" class="btn" id="finish-payment" style="display: none;" onclick="closePage()">完成支付</a>
-    </div>
+<header>
+  <h1>订单支付</h1>
+  <p>请扫码付款，并填写订单信息</p>
+</header>
+
+<div class="qr-code">
+  <p>👉 扫码付款：</p>
+  <img src="images/pay.png" alt="付款二维码">
 </div>
 
+<form id="orderForm">
+  <label>产品编号</label>
+  <input type="text" name="product" id="product" readonly>
+
+  <label>金额（美元）</label>
+  <input type="text" name="price" id="price" readonly>
+
+  <label>您的邮箱</label>
+  <input type="email" name="customer_email" id="customer_email" required>
+
+  <label>备注（可填写付款方式、交易号等）</label>
+  <textarea name="remark" id="remark" rows="3"></textarea>
+
+  <button type="submit">提交订单</button>
+</form>
+
 <script>
-    // 获取URL中的查询参数
-    const urlParams = new URLSearchParams(window.location.search);
-    const product = urlParams.get('product');
-    const price = urlParams.get('price');
+  // 自动填充 URL 参数
+  const params = new URLSearchParams(window.location.search);
+  document.getElementById('product').value = params.get('product') || '';
+  document.getElementById('price').value = params.get('price') || '';
 
-    // 显示产品名称和价格
-    document.getElementById('product-name').textContent = `产品: ${product}`;
-    document.getElementById('product-price').textContent = `价格: $${price}`;
+  // 提交后跳转到确认页面
+  document.getElementById('orderForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    const product = document.getElementById('product').value;
+    const price = document.getElementById('price').value;
+    const email = document.getElementById('customer_email').value;
+    const remark = document.getElementById('remark').value;
 
-    // 模拟付款完成后显示"完成支付"按钮
-    // 在实际应用中，你可以替换为付款成功的回调
-    setTimeout(function() {
-        document.getElementById('finish-payment').style.display = 'block';
-    }, 5000); // 模拟5秒后付款完成
-
-    // 完成支付并关闭页面
-    function closePage() {
-        alert('支付完成，感谢您的购买！');
-        window.close(); // 关闭当前页面
-    }
+    // 带参数跳转到确认页面
+    window.location.href = `confirm.html?product=${encodeURIComponent(product)}&price=${encodeURIComponent(price)}&email=${encodeURIComponent(email)}&remark=${encodeURIComponent(remark)}`;
+  });
 </script>
 
 </body>
