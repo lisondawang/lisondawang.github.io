@@ -1,4 +1,3 @@
-html
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
@@ -38,6 +37,10 @@ html
             border-radius: 10px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
             width: 200px;
+            transition: transform 0.3s;
+        }
+        .product div:hover {
+            transform: translateY(-5px);
         }
         .product img {
             width: 100%;
@@ -54,10 +57,6 @@ html
             color: white;
             text-align: center;
             padding: 20px 0;
-        }
-        .qr-code img {
-            width: 150px;
-            height: 150px;
         }
         .btn {
             background-color: #e74c3c;
@@ -76,12 +75,48 @@ html
             position: fixed;
             bottom: 10px;
             right: 10px;
-            background: rgba(44,62,80,0.9);
+            background: rgba(44,62,80,0.95);
             color: #fff;
             padding: 10px 15px;
             border-radius: 8px;
             font-size: 14px;
             box-shadow: 0 0 10px rgba(0,0,0,0.3);
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            max-width: 220px;
+        }
+        #music-player-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        #toggle-music {
+            background: #e74c3c;
+            border: none;
+            color: white;
+            border-radius: 5px;
+            padding: 2px 8px;
+            cursor: pointer;
+        }
+        #toggle-music:hover {
+            background: #c0392b;
+        }
+        #song-list {
+            background: rgba(0,0,0,0.1);
+            padding: 5px;
+            border-radius: 5px;
+            max-height: 120px;
+            overflow-y: auto;
+        }
+        #song-list div {
+            padding: 3px 5px;
+            cursor: pointer;
+            border-radius: 3px;
+        }
+        #song-list div:hover, #song-list .active {
+            background-color: #c0392b;
+            color: #fff;
         }
     </style>
 </head>
@@ -162,43 +197,77 @@ html
     <p>&copy; 2025 8号店铺. All rights reserved.</p>
 </footer>
 
-<!-- 音乐播放器区域 -->
+<!-- 音乐播放器 -->
+<audio id="bgm" autoplay muted></audio>
+
 <div id="music-player">
-    🎧 正在播放：<span id="current-song">加载中...</span>
+    <div id="music-player-top">
+        🎧 正在播放：<span id="current-song">加载中...</span>
+        <button id="toggle-music">⏯</button>
+    </div>
+    <div id="song-list"></div>
 </div>
 
 <script>
-    // === 你可以在这里添加歌曲链接 ===
     const songs = [
         "music/化风行万里.mp3",
-        "music/化风行万里.mp3",
-        "https://example.com/music/song3.mp3"
+        "music/第二首歌.mp3",
+        "music/第三首歌.mp3"
     ];
 
     let current = 0;
-    const audio = new Audio();
+    const audio = document.getElementById("bgm");
     const currentSongText = document.getElementById("current-song");
+    const toggleBtn = document.getElementById("toggle-music");
+    const songListDiv = document.getElementById("song-list");
 
-    // 播放指定歌曲
-    function playSong(index) {
+    function playSong(index){
+        current = index;
         audio.src = songs[index];
-        currentSongText.textContent = songs[index].split('/').pop();
-        audio.play().catch(err => console.log("自动播放被阻止，用户需手动交互一次。"));
+        currentSongText.textContent = songs[index].split('/').pop().replace('.mp3','');
+        audio.play().catch(err => console.log("播放被阻止，需要点击页面。"));
+        updateSongListActive();
     }
 
-    // 当歌曲播放完毕，自动播放下一首
+    function updateSongListActive(){
+        const items = songListDiv.querySelectorAll("div");
+        items.forEach((item,i)=>{
+            item.classList.toggle("active", i === current);
+        });
+    }
+
+    // 填充歌曲列表
+    songs.forEach((song, i)=>{
+        const div = document.createElement("div");
+        div.textContent = song.split('/').pop().replace('.mp3','');
+        div.addEventListener("click", ()=>playSong(i));
+        songListDiv.appendChild(div);
+    });
+
     audio.addEventListener("ended", () => {
         current = (current + 1) % songs.length;
         playSong(current);
     });
 
-    // 页面加载后自动播放第一首
     window.addEventListener("load", () => {
         playSong(current);
+        document.body.addEventListener("click", function enablePlay() {
+            audio.muted = false;
+            audio.play();
+            document.body.removeEventListener("click", enablePlay);
+        });
+    });
+
+    toggleBtn.addEventListener("click", () => {
+        if(audio.paused){
+            audio.play();
+            toggleBtn.textContent = '⏸';
+        } else {
+            audio.pause();
+            toggleBtn.textContent = '▶️';
+        }
     });
 </script>
 
 </body>
 </html>
-
-
