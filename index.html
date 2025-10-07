@@ -1,272 +1,178 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>8号店铺</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f9f9f9;
-            margin: 0;
-            padding: 0;
-        }
-        header {
-            background-color: #2c3e50;
-            color: white;
-            padding: 20px 0;
-            text-align: center;
-        }
-        section {
-            padding: 40px 10%;
-            text-align: center;
-        }
-        h2 {
-            color: #2c3e50;
-        }
-        .product {
-            display: flex;
-            justify-content: center;
-            flex-wrap: wrap;
-            margin: 20px 0;
-        }
-        .product div {
-            background-color: white;
-            margin: 10px;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            width: 200px;
-            transition: transform 0.3s;
-        }
-        .product div:hover {
-            transform: translateY(-5px);
-        }
-        .product img {
-            width: 100%;
-            height: auto;
-            border-radius: 10px;
-        }
-        .product .price {
-            font-size: 20px;
-            color: #e74c3c;
-            margin-top: 10px;
-        }
-        footer {
-            background-color: #2c3e50;
-            color: white;
-            text-align: center;
-            padding: 20px 0;
-        }
-        .btn {
-            background-color: #e74c3c;
-            color: white;
-            padding: 10px 20px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            text-decoration: none;
-        }
-        .btn:focus, .btn:hover {
-            background-color: #c0392b;
-        }
-        /* 音乐播放器样式 */
-        #music-player {
-            position: fixed;
-            bottom: 10px;
-            right: 10px;
-            background: rgba(44,62,80,0.95);
-            color: #fff;
-            padding: 10px 15px;
-            border-radius: 8px;
-            font-size: 14px;
-            box-shadow: 0 0 10px rgba(0,0,0,0.3);
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-            max-width: 220px;
-        }
-        #music-player-top {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        #toggle-music {
-            background: #e74c3c;
-            border: none;
-            color: white;
-            border-radius: 5px;
-            padding: 2px 8px;
-            cursor: pointer;
-        }
-        #toggle-music:hover {
-            background: #c0392b;
-        }
-        #song-list {
-            background: rgba(0,0,0,0.1);
-            padding: 5px;
-            border-radius: 5px;
-            max-height: 120px;
-            overflow-y: auto;
-        }
-        #song-list div {
-            padding: 3px 5px;
-            cursor: pointer;
-            border-radius: 3px;
-        }
-        #song-list div:hover, #song-list .active {
-            background-color: #c0392b;
-            color: #fff;
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>8号店铺</title>
+<style>
+body { font-family: Arial, sans-serif; background-color: #f9f9f9; margin:0; padding:0;}
+header {background-color:#2c3e50;color:white;padding:20px 0;text-align:center;}
+section {padding:40px 10%;text-align:center;}
+h2 {color:#2c3e50;}
+.product {display:flex;justify-content:center;flex-wrap:wrap;margin:20px 0;}
+.product div {background:white;margin:10px;padding:20px;border-radius:10px;box-shadow:0 0 10px rgba(0,0,0,0.1);width:200px;transition:transform 0.3s;}
+.product div:hover {transform:translateY(-5px);}
+.product img {width:100%;height:auto;border-radius:10px;}
+.product .price {font-size:20px;color:#e74c3c;margin-top:10px;}
+footer {background-color:#2c3e50;color:white;text-align:center;padding:20px 0;}
+.btn {background-color:#e74c3c;color:white;padding:10px 20px;border:none;border-radius:5px;cursor:pointer;text-decoration:none;}
+.btn:focus,.btn:hover {background-color:#c0392b;}
+
+/* 音乐播放器 */
+#music-player {position:fixed;bottom:10px;right:10px;background:rgba(44,62,80,0.95);color:#fff;padding:10px 15px;border-radius:8px;font-size:14px;box-shadow:0 0 10px rgba(0,0,0,0.3);display:flex;flex-direction:column;gap:8px;max-width:220px;transition: all 0.3s;}
+#music-player.collapsed {height:40px;width:120px;padding:5px 10px;overflow:hidden;cursor:pointer;}
+#music-player-top {display:flex;justify-content:space-between;align-items:center;}
+#toggle-music,#toggle-collapse {background:#e74c3c;border:none;color:white;border-radius:5px;padding:2px 6px;cursor:pointer;}
+#toggle-music:hover,#toggle-collapse:hover {background:#c0392b;}
+#song-list {background:rgba(0,0,0,0.1);padding:5px;border-radius:5px;max-height:120px;overflow-y:auto;}
+#song-list div {padding:3px 5px;cursor:pointer;border-radius:3px;}
+#song-list div:hover,#song-list .active {background-color:#c0392b;color:#fff;}
+</style>
 </head>
 <body>
 
 <header>
-    <h1>欢迎来到8号店铺</h1>
-    <p>我们提供优质的产品，欢迎选购！</p>
+<h1>欢迎来到8号店铺</h1>
+<p>我们提供优质的产品，欢迎选购！</p>
 </header>
 
 <section>
-    <div class="product">
-        <div>
-            <img src="images/gmail.jpg" alt="产品编号1">
-            <p>产品编号1:谷歌新邮箱</p>
-            <p>（新邮箱都有300美元优惠活动）</p>
-            <p class="price">$30.00</p>
-            <a href="payment.html?product=product1&price=30" class="btn">购买</a>
-        </div>
-        <div>
-            <img src="images/yahoo.png" alt="产品编号2">
-            <p>产品编号2：yahoo新邮箱</p>
-            <p class="price">$31.00</p>
-            <a href="payment.html?product=product2&price=31" class="btn">购买</a>
-        </div>
-        <div>
-            <a href="images/steam1.jpg" target="_blank">
-            <img src="images/steam1.jpg" alt="产品编号3">
-            </a>
-            <p>产品编号3:steam账号</p>
-            <p>账号附带150个以上随机游戏，以及大型游戏（如：黑神话、地平线等等）的免费玩打的教程和破解软件</p>
-            <p class="price">$78.00</p>
-            <a href="payment.html?product=product3&price=78" class="btn">购买</a>
-        </div>
-        <div>
-            <img src="images/telegram.png" alt="产品编号4">
-            <p>产品编号4:telegram账号</p>
-            <p class="price">$60.00</p>
-            <a href="payment.html?product=product4&price=60" class="btn">购买</a>
-        </div>
-        <div>
-            <img src="images/letouji.jpg" alt="产品编号5">
-            <p>产品编号5:btc乐透机教程</p>
-            <p>（制作好的机器是100元/台）</p>
-            <p>十分钟开奖一次，现阶段机制下奖金约3.125个btc（约247万元）</p>
-            <p>注：solo独立挖矿、pool矿池</p>
-            <p class="price">$38.00</p>
-            <a href="payment.html?product=product5&price=38" class="btn">购买</a>
-        </div>
-        <div>
-            <a href="images/jidinghegujianxitong.png" target="_blank">
-            <img src="images/jidinghegujianxitong.png" alt="产品编号6">
-            </a>
-            <p>产品编号6:机顶盒固件系统</p>
-            <p>适合型号：魔百和CM311-1a/烽火680-lc</p>
-            <p>注：其他型号的机顶盒固件系统5元/套</p>
-            <p>固件系统自带谷歌框架、adb已开、已root</p>
-            <p class="price">$10.00</p>
-            <a href="payment.html?product=product6&price=10" class="btn">购买</a>
-        </div>
-        <div>
-            <img src="images/win-defender.jpg" alt="产品编号7">
-            <p>产品编号7:win安全中心-启动停止软件</p>
-            <p>随时启动或关停windows安全中心</p>
-            <p class="price">$30.00</p>
-            <a href="payment.html?product=product7&price=30" class="btn">购买</a>
-        </div>
-    </div>
+<div class="product">
+<div>
+<img src="images/gmail.jpg" alt="产品编号1">
+<p>产品编号1:谷歌新邮箱</p>
+<p>（新邮箱都有300美元优惠活动）</p>
+<p class="price">$30.00</p>
+<a href="payment.html?product=product1&price=30" class="btn">购买</a>
+</div>
+<div>
+<img src="images/yahoo.png" alt="产品编号2">
+<p>产品编号2：yahoo新邮箱</p>
+<p class="price">$31.00</p>
+<a href="payment.html?product=product2&price=31" class="btn">购买</a>
+</div>
+<div>
+<a href="images/steam1.jpg" target="_blank"><img src="images/steam1.jpg" alt="产品编号3"></a>
+<p>产品编号3:steam账号</p>
+<p>账号附带150个以上随机游戏，以及大型游戏的免费教程和破解软件</p>
+<p class="price">$78.00</p>
+<a href="payment.html?product=product3&price=78" class="btn">购买</a>
+</div>
+<div>
+<img src="images/telegram.png" alt="产品编号4">
+<p>产品编号4:telegram账号</p>
+<p class="price">$60.00</p>
+<a href="payment.html?product=product4&price=60" class="btn">购买</a>
+</div>
+<div>
+<img src="images/letouji.jpg" alt="产品编号5">
+<p>产品编号5:btc乐透机教程</p>
+<p>（制作好的机器是100元/台）</p>
+<p>十分钟开奖一次，现阶段奖金约3.125个btc（约247万元）</p>
+<p>注：solo独立挖矿、pool矿池</p>
+<p class="price">$38.00</p>
+<a href="payment.html?product=product5&price=38" class="btn">购买</a>
+</div>
+<div>
+<a href="images/jidinghegujianxitong.png" target="_blank"><img src="images/jidinghegujianxitong.png" alt="产品编号6"></a>
+<p>产品编号6:机顶盒固件系统</p>
+<p>适合型号：魔百和CM311-1a/烽火680-lc</p>
+<p>注：其他型号固件系统5元/套</p>
+<p>固件系统自带谷歌框架、adb已开、已root</p>
+<p class="price">$10.00</p>
+<a href="payment.html?product=product6&price=10" class="btn">购买</a>
+</div>
+<div>
+<img src="images/win-defender.jpg" alt="产品编号7">
+<p>产品编号7:win安全中心-启动停止软件</p>
+<p>随时启动或关停windows安全中心</p>
+<p class="price">$30.00</p>
+<a href="payment.html?product=product7&price=30" class="btn">购买</a>
+</div>
+</div>
 
-    <h2>联系我们</h2>
-    <p>有任何问题，请通过以下邮件联系我：</p>
-    <p>注：购买完成后，请将付款信息、购买的产品编号、您的邮箱地址等截图发送至下列邮箱</p>
-    <p><a href="mailto:lisondawang@outlook.com">lisondawang@outlook.com</a></p>
+<h2>联系我们</h2>
+<p>有任何问题，请通过以下邮件联系我：</p>
+<p>购买完成后，请将付款信息、购买的产品编号、邮箱截图发送至：</p>
+<p><a href="mailto:lisondawang@outlook.com">lisondawang@outlook.com</a></p>
 
 </section>
 
 <footer>
-    <p>&copy; 2025 8号店铺. All rights reserved.</p>
+<p>&copy; 2025 8号店铺. All rights reserved.</p>
 </footer>
 
-<!-- 音乐播放器 -->
 <audio id="bgm" autoplay muted></audio>
 
-<div id="music-player">
-    <div id="music-player-top">
-        🎧 正在播放：<span id="current-song">加载中...</span>
-        <button id="toggle-music">⏯</button>
-    </div>
-    <div id="song-list"></div>
+<div id="music-player" class="collapsed">
+<div id="music-player-top">
+<span>🎧 <span id="current-song">加载中...</span></span>
+<div>
+<button id="toggle-music">⏯</button>
+<button id="toggle-collapse">🔽</button>
+</div>
+</div>
+<div id="song-list"></div>
 </div>
 
 <script>
-    const songs = [
-        "music/化风行万里.mp3",
-        "music/第二首歌.mp3",
-        "music/第三首歌.mp3"
-    ];
+const songs = ["music/化风行万里.mp3","music/第二首歌.mp3","music/第三首歌.mp3"];
+let current = 0;
+const audio = document.getElementById("bgm");
+const currentSongText = document.getElementById("current-song");
+const toggleBtn = document.getElementById("toggle-music");
+const collapseBtn = document.getElementById("toggle-collapse");
+const playerDiv = document.getElementById("music-player");
+const songListDiv = document.getElementById("song-list");
 
-    let current = 0;
-    const audio = document.getElementById("bgm");
-    const currentSongText = document.getElementById("current-song");
-    const toggleBtn = document.getElementById("toggle-music");
-    const songListDiv = document.getElementById("song-list");
+function playSong(index){
+    current = index;
+    audio.src = songs[index];
+    currentSongText.textContent = songs[index].split('/').pop().replace('.mp3','');
+    audio.play().catch(err => console.log("播放被阻止"));
+    updateSongListActive();
+}
 
-    function playSong(index){
-        current = index;
-        audio.src = songs[index];
-        currentSongText.textContent = songs[index].split('/').pop().replace('.mp3','');
-        audio.play().catch(err => console.log("播放被阻止，需要点击页面。"));
-        updateSongListActive();
-    }
+function updateSongListActive(){
+    const items = songListDiv.querySelectorAll("div");
+    items.forEach((item,i)=>item.classList.toggle("active", i===current));
+}
 
-    function updateSongListActive(){
-        const items = songListDiv.querySelectorAll("div");
-        items.forEach((item,i)=>{
-            item.classList.toggle("active", i === current);
-        });
-    }
+// 填充歌曲列表
+songs.forEach((song,i)=>{
+    const div = document.createElement("div");
+    div.textContent = song.split('/').pop().replace('.mp3','');
+    div.addEventListener("click",()=>playSong(i));
+    songListDiv.appendChild(div);
+});
 
-    // 填充歌曲列表
-    songs.forEach((song, i)=>{
-        const div = document.createElement("div");
-        div.textContent = song.split('/').pop().replace('.mp3','');
-        div.addEventListener("click", ()=>playSong(i));
-        songListDiv.appendChild(div);
+audio.addEventListener("ended", ()=>{
+    current = (current + 1) % songs.length;
+    playSong(current);
+});
+
+// 静音自动播放
+window.addEventListener("load", ()=>{
+    audio.muted = true;
+    playSong(current);
+    document.body.addEventListener("click", function enablePlay(){
+        audio.muted = false;
+        audio.play();
+        document.body.removeEventListener("click", enablePlay);
     });
+});
 
-    audio.addEventListener("ended", () => {
-        current = (current + 1) % songs.length;
-        playSong(current);
-    });
+// 播放/暂停按钮
+toggleBtn.addEventListener("click", ()=>{
+    if(audio.paused){ audio.play(); toggleBtn.textContent='⏸'; }
+    else{ audio.pause(); toggleBtn.textContent='▶️'; }
+});
 
-    window.addEventListener("load", () => {
-        playSong(current);
-        document.body.addEventListener("click", function enablePlay() {
-            audio.muted = false;
-            audio.play();
-            document.body.removeEventListener("click", enablePlay);
-        });
-    });
-
-    toggleBtn.addEventListener("click", () => {
-        if(audio.paused){
-            audio.play();
-            toggleBtn.textContent = '⏸';
-        } else {
-            audio.pause();
-            toggleBtn.textContent = '▶️';
-        }
-    });
+// 折叠/展开按钮
+collapseBtn.addEventListener("click", ()=>{
+    playerDiv.classList.toggle("collapsed");
+    collapseBtn.textContent = playerDiv.classList.contains("collapsed") ? '🔽' : '🔼';
+});
 </script>
 
 </body>
