@@ -1,3 +1,4 @@
+html
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
@@ -70,6 +71,18 @@
         .btn:focus, .btn:hover {
             background-color: #c0392b;
         }
+        /* 音乐播放器样式 */
+        #music-player {
+            position: fixed;
+            bottom: 10px;
+            right: 10px;
+            background: rgba(44,62,80,0.9);
+            color: #fff;
+            padding: 10px 15px;
+            border-radius: 8px;
+            font-size: 14px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.3);
+        }
     </style>
 </head>
 <body>
@@ -86,31 +99,27 @@
             <p>产品编号1:谷歌新邮箱</p>
             <p>（新邮箱都有300美元优惠活动）</p>
             <p class="price">$30.00</p>
-            <!-- 添加跳转链接到付款页面 -->
             <a href="payment.html?product=product1&price=30" class="btn">购买</a>
         </div>
         <div>
             <img src="images/yahoo.png" alt="产品编号2">
             <p>产品编号2：yahoo新邮箱</p>
             <p class="price">$31.00</p>
-            <!-- 添加跳转链接到付款页面 -->
             <a href="payment.html?product=product2&price=31" class="btn">购买</a>
         </div>
-         <div>
+        <div>
             <a href="images/steam1.jpg" target="_blank">
             <img src="images/steam1.jpg" alt="产品编号3">
             </a>
             <p>产品编号3:steam账号</p>
             <p>账号附带150个以上随机游戏，以及大型游戏（如：黑神话、地平线等等）的免费玩打的教程和破解软件</p>
             <p class="price">$78.00</p>
-            <!-- 添加跳转链接到付款页面 -->
             <a href="payment.html?product=product3&price=78" class="btn">购买</a>
         </div>
         <div>
             <img src="images/telegram.png" alt="产品编号4">
             <p>产品编号4:telegram账号</p>
             <p class="price">$60.00</p>
-            <!-- 添加跳转链接到付款页面 -->
             <a href="payment.html?product=product4&price=60" class="btn">购买</a>
         </div>
         <div>
@@ -120,7 +129,6 @@
             <p>十分钟开奖一次，现阶段机制下奖金约3.125个btc（约247万元）</p>
             <p>注：solo独立挖矿、pool矿池</p>
             <p class="price">$38.00</p>
-            <!-- 添加跳转链接到付款页面 -->
             <a href="payment.html?product=product5&price=38" class="btn">购买</a>
         </div>
         <div>
@@ -132,7 +140,6 @@
             <p>注：其他型号的机顶盒固件系统5元/套</p>
             <p>固件系统自带谷歌框架、adb已开、已root</p>
             <p class="price">$10.00</p>
-            <!-- 添加跳转链接到付款页面 -->
             <a href="payment.html?product=product6&price=10" class="btn">购买</a>
         </div>
         <div>
@@ -140,7 +147,6 @@
             <p>产品编号7:win安全中心-启动停止软件</p>
             <p>随时启动或关停windows安全中心</p>
             <p class="price">$30.00</p>
-            <!-- 添加跳转链接到付款页面 -->
             <a href="payment.html?product=product7&price=30" class="btn">购买</a>
         </div>
     </div>
@@ -156,32 +162,41 @@
     <p>&copy; 2025 8号店铺. All rights reserved.</p>
 </footer>
 
+<!-- 音乐播放器区域 -->
+<div id="music-player">
+    🎧 正在播放：<span id="current-song">加载中...</span>
+</div>
+
+<script>
+    // === 你可以在这里添加歌曲链接 ===
+    const songs = [
+        "https://example.com/music/song1.mp3",
+        "https://example.com/music/song2.mp3",
+        "https://example.com/music/song3.mp3"
+    ];
+
+    let current = 0;
+    const audio = new Audio();
+    const currentSongText = document.getElementById("current-song");
+
+    // 播放指定歌曲
+    function playSong(index) {
+        audio.src = songs[index];
+        currentSongText.textContent = songs[index].split('/').pop();
+        audio.play().catch(err => console.log("自动播放被阻止，用户需手动交互一次。"));
+    }
+
+    // 当歌曲播放完毕，自动播放下一首
+    audio.addEventListener("ended", () => {
+        current = (current + 1) % songs.length;
+        playSong(current);
+    });
+
+    // 页面加载后自动播放第一首
+    window.addEventListener("load", () => {
+        playSong(current);
+    });
+</script>
+
 </body>
 </html>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
